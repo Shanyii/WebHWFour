@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>簡易查詢</title>
+</head>
+<body>
+<h1>簡易查詢</h1>
+<form id="queryForm">
+  <label for="year">Year:</label>
+  <input type="number" id="year" name="year" required>
+  <label for="month">Month:</label>
+  <input type="number" id="month" name="month" required>
+  <button type="submit">查詢</button>
+</form>
+<h2>結果</h2>
+<div id="results"></div>
+
+<script>
+  document.getElementById('queryForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const year = document.getElementById('year').value;
+    const month = document.getElementById('month').value;
+
+    const response = await fetch(`/api/query?year=${year}&month=${month}`);
+    const data = await response.json();
+
+    const resultsDiv = document.getElementById('results');
+    if (data.error) {
+      resultsDiv.innerText = `Error: ${data.error}`;
+    } else {
+      resultsDiv.innerText = `Price: ${data.money}`;
+    }
+  });
+</script>
+</body>
+</html>
